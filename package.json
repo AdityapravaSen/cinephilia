@@ -1,0 +1,20 @@
+{
+  "name": "cinephilia",
+  "version": "1.0.0",
+  "description": "a movie database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Adityaprava Sen",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "npm": "^6.13.4",
+    "node": "^12.14.1"
+  }
+}

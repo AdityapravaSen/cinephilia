@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head'); -%>
+        <title>Cinephilia- Movie Info</title>
+</head>
+
+<body>
+    <%- include('partials/navbar'); -%>
+
+        <div class="movie-card">
+            <div class="hero" style="background: url(' <%= backdrop %> ');">
+                <div class="details">
+                    <div class="title1">
+                        <%= movie_name %> <span>
+                                <%= language %>
+                            </span>
+                    </div>
+                    <div class="title2">
+                        <%= tagline %>
+                    </div>
+                    <div class="title3">
+                        <span class="rating">⭐ <%= vote %> </span>
+                        <span class="likes">❤️ <%= popularity %> </span>
+                    </div>
+                </div> <!-- end details -->
+            </div> <!-- end hero -->
+            <div class="description">
+                <img src=" <%= poster %> " alt="cover" class="cover" />
+                <div class="column1">
+                    <% for(let j=0; j<genre.length; j++) { %>
+                        <span class="tag">
+                            <%= genre[j].name %>
+                        </span>
+                        <% } %>
+                </div>
+
+                <div class="column2">
+
+                    <p>
+                        <%= overview %>
+                    </p>
+                    <a href=" <%= homepage %> " target="_blank"><button type="button"
+                            class="btn btn-outline-light">Learn More</button></a>
+                </div>
+            </div> <!-- end column2 -->
+        </div> <!-- end description -->
+        </div> <!-- end movie-card -->
+        <!-- similar movies -->
+        <h2 class="top-rated-heading">CHECKOUT SIMILAR MOVIES</h2>
+        <div class="slider" id="similar-movies-container">
+        </div>
+        <%- include('partials/footer'); -%>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+
+<script>
+    const apiKey = '8f15dd610db0f3c8fb64da76c86fd488';
+    const url = 'https://api.themoviedb.org/3/';
+    const imgUrl = 'https://image.tmdb.org/t/p/w500';
+    const similarMovies = document.querySelector('#similar-movies-container');
+    let id = "<%= movie_id %>";
+    let type = "<%= type %>";
+
+    function similar(id, type) {
+        similarUrl = `${url}${type}/${id}/similar?api_key=${apiKey}&language=en-US&page=1`;
+
+        fetch(similarUrl)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                let e = '';
+                if (type == 'movie') {
+                    for (let i = 0; i < data.results.length; i++) {
+                        if (data.results[i].poster_path) {
+                            e += `<div class="slide"><figure>
+                    <a href="/info/movie/${data.results[i].id}"><img src="${imgUrl}${data.results[i].poster_path}" class="top-rated-card" alt="poster"></a>
+                    <figcaption> ${data.results[i].title} </figcaption>
+                    </figure></div>`;
+                        }
+                    }
+                }
+                else if (type == 'tv') {
+                    for (let i = 0; i < data.results.length; i++) {
+                        if (data.results[i].poster_path) {
+                            e += `<div class="slide"><figure>
+                    <a href="/info/tv/${data.results[i].id}"><img src="${imgUrl}${data.results[i].poster_path}" class="top-rated-card" alt="poster"></a>
+                    <figcaption> ${data.results[i].name} </figcaption>
+                    </figure></div>`;
+                        }
+                    }
+                }
+                similarMovies.innerHTML = e;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    similar(id, type);
+
+</script>
+
+</html>
