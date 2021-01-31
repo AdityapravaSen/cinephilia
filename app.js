@@ -2,6 +2,7 @@ const express = require("express");
 const ejs = require("ejs");
 const fetch = require('node-fetch');
 const { response, query } = require("express");
+let PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -82,6 +83,6 @@ app.get('/shows', function (req, res) {
     res.render('shows');
 })
 
-app.listen(3000, function () {
-    console.log("Server started on port 3000");
+app.listen(PORT, function () {
+    console.log(`Server started on port ${PORT}`);
 });
